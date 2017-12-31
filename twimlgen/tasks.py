@@ -1,5 +1,5 @@
 from models import Call
-from lendup import *
+from lendup import celery_app
 from django.conf import settings
 import datetime
 import time
