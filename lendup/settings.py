@@ -26,7 +26,7 @@ SECRET_KEY = '@*jz-0_qkq-z-@n!qp^#@74rs-isgf-hpr&%!7(ts_p(trjzlq'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'ec2-54-219-160-4.us-west-1.compute.amazonaws.com']
 
 # Twilio information
 TWILIO_ACCOUNT_ID = "ACd0a7b38a982a8d3b9a47af0011d26cae"
@@ -50,8 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'twimlgen',
-    'background_task'
+    'twimlgen'
 ]
 
 MIDDLEWARE = [
@@ -69,7 +68,7 @@ ROOT_URLCONF = 'lendup.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["templates"],
+        'DIRS': [os.path.join(BASE_DIR, "templates")],
         'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [
