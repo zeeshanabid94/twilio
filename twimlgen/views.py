@@ -9,6 +9,7 @@ from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 import strings
 from forms import UserInputForm
+from models import Call
 
 # from twilio.twiml.voice_response import Gather, VoiceResponse, Say
 #
@@ -23,6 +24,11 @@ class UserInputView(FormView):
     template_name = 'welcome.html'
     form_class = UserInputForm
     success_url = 'still have to write this'
+
+    def get_context_data(self, **kwargs):
+        context = super(UserInputView, self).get_context_data()
+        context["list"] = Call.objects.all()
+        return context
 
     def form_valid(self, form):
         print "Valid form"

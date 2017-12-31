@@ -10,5 +10,13 @@
     <input type="submit" value="Call" />
 </form>
 
+<ul>
+    {% for call in list %}
+    <li>{{call.number}}</li>
+    {% endfor %}
+</ul>
+
+
+
 </body>
 </html>

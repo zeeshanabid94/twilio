@@ -32,12 +32,15 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 TWILIO_ACCOUNT_ID = "ACd0a7b38a982a8d3b9a47af0011d26cae"
 TWILIO_TOKEN = "a82a60ab6d1e7fece7a6de0dbc75722c"
 TWILIO_CLIENT = Client(TWILIO_ACCOUNT_ID, TWILIO_TOKEN)
+
 # Production variable
 PRODUCTION = False
 if PRODUCTION:
     pass
 else:
+    DOMAIN = "localhost:8000"
     pass
+
 # Application definition
 
 INSTALLED_APPS = [
