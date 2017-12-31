@@ -38,7 +38,7 @@ PRODUCTION = False
 if PRODUCTION:
     pass
 else:
-    DOMAIN = "localhost:8000"
+    DOMAIN = "http://www.ec2-54-219-160-4.us-west-1.compute.amazonaws.com"
     pass
 
 # Application definition

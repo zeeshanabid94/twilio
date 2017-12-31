@@ -1,5 +1,5 @@
 from django import forms
-import tasks
+from tasks import delay_call
 from django.conf import settings
 from django.core.urlresolvers import reverse
 
@@ -9,4 +9,4 @@ class UserInputForm(forms.Form):
     time = forms.CharField(max_length=2, required=True)
 
     def call_user(self, request):
-        tasks.delay_call.delay(self.cleaned_data['number'], self.cleaned_data['time'])
+        delay_call.delay(self.cleaned_data['number'], self.cleaned_data['time'])
