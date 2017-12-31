@@ -44,8 +44,8 @@ class TwimlGen(View):
     def get(self, *args, **kwargs):
         twimlresponse = VoiceResponse()
 
-        gather = Gather(input='speech', timeout=5)
-        gather.say("Say a number:")
+        gather = Gather(input='dtmf', timeout=5)
+        gather.say("Enter a number followed by # key")
 
         # Can add a beep here
         twimlresponse.append(gather)
