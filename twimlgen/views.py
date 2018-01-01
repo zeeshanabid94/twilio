@@ -9,7 +9,7 @@ from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 import strings
 from forms import UserInputForm
-from models import Call
+from models import Call, Game
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 # from twilio.twiml.voice_response import Gather, VoiceResponse, Say
@@ -28,7 +28,7 @@ class UserInputView(FormView):
 
 	def get_context_data(self, **kwargs):
 		context = super(UserInputView, self).get_context_data()
-		context["list"] = Call.objects.all()
+		context["list"] = Game.objects.all()
 		return context
 
 	def form_valid(self, form):
@@ -44,8 +44,8 @@ class TwimlGen(View):
 	def get(self, *args, **kwargs):
 		twimlresponse = VoiceResponse()
 
+		twimlresponse.say("Enter a number followed by the pound key")
 		gather = Gather(input='dtmf')
-		gather.say("Enter a number followed by pound key")
 
 		# Can add a beep here
 		twimlresponse.append(gather)
@@ -55,9 +55,16 @@ class TwimlGen(View):
 		httpresponse = HttpResponse(twimlresponse, content_type="text/xml", status = 200)
 		return httpresponse
 
+
 	def post(self, *args, **kwargs):
 		number = self.request.POST.get('Digits', 10)
-		to = self.request.GET.get('To', 'number')
+		to = self.request.POST.get('To', 'number')
+		try:
+			call = Call.objects.get(number=to)
+			game = Game(call = call, fizzbuzz = number)
+			game.save()
+		except:
+			pass
 		print number
 		twimlresponse = VoiceResponse()
 

@@ -18,3 +18,8 @@ def delay_call(number, delay, url_number):
             url='http://twiliodemo.hopto.org/enter_a_number/'
         )
 
+	try:
+		call_obj = Call.objects.get(number = number)
+	except:
+		call_obj = Call(number = number, origin_time = datetime.datetime.now(), delay = delay)
+		call_obj.save()

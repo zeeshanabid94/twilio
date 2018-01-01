@@ -5,6 +5,9 @@ from django.db import models
 # Create your models here.
 
 class Call(models.Model):
-    origin_time = models.DateTimeField()
     delay = models.IntegerField(default=0)
     number = models.CharField(max_length=16)
+
+class Game(models.Model):
+    call = models.OneToOneField(Call, default=None)
+    fizzbuzz = models.IntegerField(default=0)
