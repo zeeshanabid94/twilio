@@ -44,8 +44,8 @@ class TwimlGen(View):
     def get(self, *args, **kwargs):
         twimlresponse = VoiceResponse()
 
+	twimlresponse.say("Enter a number followed by the pound key")
         gather = Gather(input='dtmf')
-        gather.say("Enter a number followed by pound key")
 
         # Can add a beep here
         twimlresponse.append(gather)
@@ -56,7 +56,7 @@ class TwimlGen(View):
         return httpresponse
 
     def post(self, *args, **kwargs):
-        number = self.request.POST.get('Digits', 3)
+        number = self.request.POST.get('Digits', 10)
         print number
 	twimlresponse = VoiceResponse()
 
