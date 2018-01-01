@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 from twilio.rest import Client
+from twilio.jwt.client import ClientCapabilityToken
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -32,6 +34,8 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'ec2-54-219-160-4.us-west-1.compute.a
 TWILIO_ACCOUNT_ID = "ACd0a7b38a982a8d3b9a47af0011d26cae"
 TWILIO_TOKEN = "a82a60ab6d1e7fece7a6de0dbc75722c"
 TWILIO_CLIENT = Client(TWILIO_ACCOUNT_ID, TWILIO_TOKEN)
+TWILIO_CAPABILITY = ClientCapabilityToken(TWILIO_ACCOUNT_ID, TWILIO_TOKEN)
+TWILIO_APP_ID = 'APff5c017e966027737efdc9a52e3938cd'
 
 # Production variable
 PRODUCTION = False
