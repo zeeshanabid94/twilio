@@ -10,7 +10,8 @@ from django.core.urlresolvers import reverse
 import strings
 from forms import UserInputForm
 from models import Call
-
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 # from twilio.twiml.voice_response import Gather, VoiceResponse, Say
 #
 # response = VoiceResponse()
@@ -21,57 +22,57 @@ from models import Call
 # Create your views here.
 
 class UserInputView(FormView):
-    template_name = 'welcome.html'
-    form_class = UserInputForm
-    success_url = 'still have to write this'
+	template_name = 'welcome.html'
+	form_class = UserInputForm
+	success_url = 'still have to write this'
 
-    def get_context_data(self, **kwargs):
-        context = super(UserInputView, self).get_context_data()
-        context["list"] = Call.objects.all()
-        return context
+	def get_context_data(self, **kwargs):
+		context = super(UserInputView, self).get_context_data()
+		context["list"] = Call.objects.all()
+		return context
 
-    def form_valid(self, form):
-        print "Valid form"
-        # This method is called when valid form data has been POSTed.
-        # It should return an HttpResponse.
-        form.call_user(self.request)
-        return super(FormView, self).form_valid(form)
-
-
+	def form_valid(self, form):
+		print "Valid form"
+		# This method is called when valid form data has been POSTed.
+		# It should return an HttpResponse.
+		form.call_user(self.request)
+		return super(FormView, self).form_valid(form)
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class TwimlGen(View):
-    def get(self, *args, **kwargs):
-        twimlresponse = VoiceResponse()
+	def get(self, *args, **kwargs):
+		twimlresponse = VoiceResponse()
 
-        gather = Gather(timeout=5)
-        gather.say("Enter a number followed by hash key")
+		gather = Gather(input='dtmf')
+		gather.say("Enter a number followed by pound key")
 
-        # Can add a beep here
-        twimlresponse.append(gather)
+		# Can add a beep here
+		twimlresponse.append(gather)
 
-        # Debugging print statements
-        print twimlresponse
-        httpresponse = HttpResponse(twimlresponse, content_type="application/xml")
-        return httpresponse
+		# Debugging print statements
+		print twimlresponse
+		httpresponse = HttpResponse(twimlresponse, content_type="text/xml", status = 200)
+		return httpresponse
 
-    def post(self, *args, **kwargs):
-        number = self.request.POST['number']
-        twimlresponse = VoiceResponse()
+	def post(self, *args, **kwargs):
+		number = self.request.POST.get('Digits', 3)
+		print number
+		twimlresponse = VoiceResponse()
 
-        for i in range(1, int(number) + 1):
-            if i % 3 == 0 and i % 5 == 0:
-                twimlresponse.say(strings.Fizzbuzz, voice="woman", language="en-US")
-            elif i % 3 == 0:
-                twimlresponse.say(strings.Fizz, voice="woman", language="en-US")
-            elif i % 5 == 0:
-                twimlresponse.say(strings.Buzz, voice="woman", language="en-US")
-            else:
-                twimlresponse.say(str(i), voice="woman", language="en-US")
+		for i in range(1, int(number) + 1):
+			if i % 3 == 0 and i % 5 == 0:
+				twimlresponse.say(strings.Fizzbuzz, voice="woman", language="en-US")
+			elif i % 3 == 0:
+				twimlresponse.say(strings.Fizz, voice="woman", language="en-US")
+			elif i % 5 == 0:
+				twimlresponse.say(strings.Buzz, voice="woman", language="en-US")
+			else:
+				twimlresponse.say(str(i), voice="woman", language="en-US")
 
-        # Debugging print statements
-        print twimlresponse
+		# Debugging print statements
+		print twimlresponse
 
-        httpresponse = HttpResponse(twimlresponse, content_type="application/xml")
-        return httpresponse
+		httpresponse = HttpResponse(twimlresponse, content_type="application/xml", status=200)
+		return httpresponse
 
