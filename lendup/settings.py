@@ -26,19 +26,18 @@ SECRET_KEY = '@*jz-0_qkq-z-@n!qp^#@74rs-isgf-hpr&%!7(ts_p(trjzlq'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'ec2-54-219-160-4.us-west-1.compute.amazonaws.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'ec2-54-219-160-4.us-west-1.compute.amazonaws.com', '54.219.160.4', 'twiliodemo.hopto.org']
 
 # Twilio information
 TWILIO_ACCOUNT_ID = "ACd0a7b38a982a8d3b9a47af0011d26cae"
 TWILIO_TOKEN = "a82a60ab6d1e7fece7a6de0dbc75722c"
-TWILIO_CLIENT = Client(TWILIO_ACCOUNT_ID, TWILIO_TOKEN)
 
 # Production variable
 PRODUCTION = False
 if PRODUCTION:
     pass
 else:
-    DOMAIN = "http://www.ec2-54-219-160-4.us-west-1.compute.amazonaws.com"
+    DOMAIN = "http://ec2-54-219-160-4.us-west-1.compute.amazonaws.com/enter_a_number/"
     pass
 
 # Application definition

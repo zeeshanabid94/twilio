@@ -10,7 +10,8 @@ from django.core.urlresolvers import reverse
 import strings
 from forms import UserInputForm
 from models import Call
-
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 # from twilio.twiml.voice_response import Gather, VoiceResponse, Say
 #
 # response = VoiceResponse()
@@ -38,26 +39,26 @@ class UserInputView(FormView):
         return super(FormView, self).form_valid(form)
 
 
-
-
+@method_decorator(csrf_exempt, name='dispatch')
 class TwimlGen(View):
     def get(self, *args, **kwargs):
         twimlresponse = VoiceResponse()
 
-        gather = Gather(input='dtmf', timeout=5)
-        gather.say("Enter a number followed by # key")
+        gather = Gather(input='dtmf')
+        gather.say("Enter a number followed by pound key")
 
         # Can add a beep here
         twimlresponse.append(gather)
 
         # Debugging print statements
         print twimlresponse
-        httpresponse = HttpResponse(twimlresponse, content_type="application/xml")
+        httpresponse = HttpResponse(twimlresponse, content_type="text/xml", status = 200)
         return httpresponse
 
     def post(self, *args, **kwargs):
-        number = self.request.POST['number']
-        twimlresponse = VoiceResponse()
+        number = self.request.POST.get('Digits', 3)
+        print number
+	twimlresponse = VoiceResponse()
 
         for i in range(1, int(number) + 1):
             if i % 3 == 0 and i % 5 == 0:
@@ -72,6 +73,6 @@ class TwimlGen(View):
         # Debugging print statements
         print twimlresponse
 
-        httpresponse = HttpResponse(twimlresponse, content_type="application/xml")
+        httpresponse = HttpResponse(twimlresponse, content_type="application/xml", status=200)
         return httpresponse
 
