@@ -17,5 +17,4 @@ def delay_call(number, delay, url_number):
             from_="13236202984",
             url='http://twiliodemo.hopto.org/enter_a_number/'
         )
-	call_obj = Call(number = number, origin_time = datetime.datetime.now(), delay = delay)
-	call_obj.save()
+

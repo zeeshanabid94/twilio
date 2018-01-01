@@ -56,7 +56,8 @@ class TwimlGen(View):
 		return httpresponse
 
 	def post(self, *args, **kwargs):
-		number = self.request.POST.get('Digits', 3)
+		number = self.request.POST.get('Digits', 10)
+		to = self.request.GET.get('To', 'number')
 		print number
 		twimlresponse = VoiceResponse()
 
